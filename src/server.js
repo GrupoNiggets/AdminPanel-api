@@ -23,7 +23,11 @@ async function startServer () {
 startServer()
 
 process.on('unhandledRejection', (reason) => {
-  logger.error('Unhandled Rejection', { reason })
+  if (reason instanceof Error) {
+    logger.error(`Unhandled Rejection: ${reason.message}`, { error: reason })
+  } else {
+    logger.error('Unhandled Rejection', { reason })
+  }
 })
 
 process.on('uncaughtException', (err) => {
