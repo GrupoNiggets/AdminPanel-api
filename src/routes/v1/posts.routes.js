@@ -1,7 +1,13 @@
 import { Router } from 'express'
-import { listUsers, getUser, createUser, updateUser, deleteUser } from '../../modules/users/user.controller.js'
-import { createUserSchema, updateUserSchema } from '../../modules/users/user.validator.js'
 import Joi from 'joi'
+import {
+  listPosts,
+  getPost,
+  createPost,
+  updatePost,
+  deletePost
+} from '../../modules/posts/post.controller.js'
+import { createPostSchema, updatePostSchema } from '../../modules/posts/post.validator.js'
 
 const router = Router()
 
@@ -19,10 +25,10 @@ function validate (schema) {
   }
 }
 
-router.get('/', listUsers)
-router.get('/:id', validate(Joi.object({ id: Joi.string().uuid().required() })), getUser)
-router.post('/', validate(createUserSchema), createUser)
-router.put('/:id', validate(Joi.object({ id: Joi.string().uuid().required() })), validate(updateUserSchema), updateUser)
-router.delete('/:id', validate(Joi.object({ id: Joi.string().uuid().required() })), deleteUser)
+router.get('/', listPosts)
+router.get('/:id', validate(Joi.object({ id: Joi.string().uuid().required() })), getPost)
+router.post('/', validate(createPostSchema), createPost)
+router.put('/:id', validate(Joi.object({ id: Joi.string().uuid().required() })), validate(updatePostSchema), updatePost)
+router.delete('/:id', validate(Joi.object({ id: Joi.string().uuid().required() })), deletePost)
 
 export default router

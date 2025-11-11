@@ -28,11 +28,3 @@ export const deleteMessage = asyncHandler(async (req, res) => {
   await chatService.deleteMessage(req.params.id)
   noContent(res)
 })
-
-export default {
-  listMessages,
-  getMessage,
-  createMessage,
-  updateMessage,
-  deleteMessage
-}
