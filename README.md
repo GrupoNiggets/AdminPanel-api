@@ -71,9 +71,5 @@ src/
     swagger.js
 ```
 
-### Notas
-- El repositorio de `users` es en memoria (Map). Sustituir por una capa de persistencia (SQL/NoSQL) sin cambiar controladores/servicios.
-- Las validaciones usan Joi con un validador ligero en rutas.
-- Seguridad: Helmet, rate limit, CORS, JSON parser limitado y compresión.
 
 
