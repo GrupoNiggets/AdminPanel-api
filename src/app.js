@@ -1,8 +1,8 @@
 import { createExpressApp } from './loaders/express.js'
 import { setupSwagger } from './loaders/swagger.js'
 
-export function buildApp () {
-  const app = createExpressApp()
+export async function buildApp () {
+  const app = await createExpressApp()
   setupSwagger(app)
   return app
 }

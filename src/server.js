@@ -2,13 +2,25 @@ import http from 'http'
 import buildApp from './app.js'
 import { config } from './config/index.js'
 import { logger } from './config/logger.js'
+import { connectMongoose } from './loaders/mongoose.js'
 
-const app = buildApp()
-const server = http.createServer(app)
+async function startServer () {
+  try {
+    await connectMongoose()
+  } catch (err) {
+    logger.error('Error conectando a MongoDB', { error: err })
+    process.exit(1)
+  }
 
-server.listen(config.app.port, () => {
-  logger.info(`Servidor iniciado en ${config.app.url} (env: ${config.env})`)
-})
+  const app = await buildApp()
+  const server = http.createServer(app)
+
+  server.listen(config.app.port, () => {
+    logger.info(`Servidor iniciado en ${config.app.url} (env: ${config.env})`)
+  })
+}
+
+startServer()
 
 process.on('unhandledRejection', (reason) => {
   logger.error('Unhandled Rejection', { reason })

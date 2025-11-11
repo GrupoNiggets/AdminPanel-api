@@ -1,40 +1,38 @@
-import { randomUUID } from 'crypto'
-
-const users = new Map()
+import { UserModel } from './user.mongoose.js'
 
 export class UserRepository {
   async list () {
-    return Array.from(users.values())
+    const docs = await UserModel.find({}).lean().exec()
+    return docs
   }
 
   async getById (id) {
-    return users.get(id) || null
+    const doc = await UserModel.findOne({ id }).lean().exec()
+    return doc || null
   }
 
   async getByEmail (email) {
-    return Array.from(users.values()).find(u => u.email === email) || null
+    const doc = await UserModel.findOne({ email }).lean().exec()
+    return doc || null
   }
 
   async create (data) {
-    const now = new Date()
-    const id = randomUUID()
-    const entity = { id, ...data, createdAt: now, updatedAt: now }
-    users.set(id, entity)
-    return entity
+    const created = await UserModel.create(data)
+    return created.toObject()
   }
 
   async update (id, changes) {
-    const existing = users.get(id)
-    if (!existing) return null
-    const updated = { ...existing, ...changes, updatedAt: new Date() }
-    users.set(id, updated)
-    return updated
+    const updated = await UserModel.findOneAndUpdate(
+      { id },
+      { $set: changes },
+      { new: true, lean: true }
+    ).exec()
+    return updated || null
   }
 
   async remove (id) {
-    const existed = users.get(id)
-    users.delete(id)
-    return existed != null
+    const res = await UserModel.deleteOne({ id }).exec()
+    return res.deletedCount === 1
   }
 }
 
