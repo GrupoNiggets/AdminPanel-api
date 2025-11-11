@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import { config } from '../config/index.js'
 import { logger } from '../config/logger.js'
 
 /**
@@ -7,10 +6,20 @@ import { logger } from '../config/logger.js'
  * Lanza el error si la conexión falla para que el proceso padre pueda decidir.
  */
 export async function connectMongo () {
-  const uri = process.env.MONGO_URI || config.db?.uri || 'mongodb://localhost:27017/adminpanel'
+  const uri = process.env.MONGO_URI
+
+  if (!uri) {
+    logger.error('MONGO_URI no está configurada. Añade MONGO_URI en el archivo .env')
+    throw new Error('MONGO_URI no configurada')
+  }
+
+  // Redactamos credenciales para el log (no imprimir usuario/password en logs)
+  const redactedUri = uri.replace(/:\/\/([^:@]+):([^@]+)@/, '://***:***@')
+  logger.info(`Usando MONGO_URI: ${redactedUri}`)
+
   try {
     await mongoose.connect(uri)
-    logger.info(`Conectado a MongoDB: ${uri}`)
+    logger.info('Conectado a MongoDB')
 
     mongoose.connection.on('error', (err) => {
       logger.error('MongoDB connection error', { error: err })
