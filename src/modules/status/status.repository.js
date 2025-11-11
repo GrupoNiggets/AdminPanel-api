@@ -1,4 +1,4 @@
-import { UserModel } from './user.mongoose.js'
+import { UserModel } from './status.mongoose.js'
 
 export class UserRepository {
   async list () {

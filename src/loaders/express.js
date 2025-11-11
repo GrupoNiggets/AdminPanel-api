@@ -4,12 +4,11 @@ import cors from 'cors'
 import morgan from 'morgan'
 import compression from 'compression'
 import rateLimit from 'express-rate-limit'
-import routes from '../routes/index.js'
 import { notFoundHandler } from '../middlewares/notFound.js'
 import { errorHandler } from '../middlewares/errorHandler.js'
 import config from '../config/index.js'
 
-export function createExpressApp () {
+export async function createExpressApp () {
   const app = express()
 
   app.set('trust proxy', 1)
@@ -29,6 +28,7 @@ export function createExpressApp () {
   })
   app.use(limiter)
 
+  const { default: routes } = await import('../routes/index.js')
   app.use('/api', routes)
 
   app.use(notFoundHandler)
