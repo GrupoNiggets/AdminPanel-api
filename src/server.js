@@ -30,5 +30,3 @@ process.on('uncaughtException', (err) => {
   logger.error('Uncaught Exception', { error: err })
   process.exit(1)
 })
-
-
