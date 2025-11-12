@@ -6,7 +6,7 @@ import {
   createPost,
   updatePost,
   deletePost
-} from '../../modules/posts/posts.index.js'
+} from '../../modules/posts/post.index.js'
 import { createPostSchema, updatePostSchema } from '../../modules/posts/post.validator.js'
 
 const router = Router()
