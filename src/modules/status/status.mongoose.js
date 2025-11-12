@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
 }, {
   timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
   versionKey: false,
-  collection: 'users'
+  collection: 'status'
 })
 
 export const UserModel = mongoose.models.User || mongoose.model('User', userSchema)
