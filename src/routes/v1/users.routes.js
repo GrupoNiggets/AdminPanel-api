@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { listUsers, getUser, createUser, updateUser, deleteUser } from '../../modules/users/user.controller.js'
+import { listUsers, getUser, createUser, updateUser, deleteUser } from '../../modules/users/index.js'
 import { createUserSchema, updateUserSchema } from '../../modules/users/user.validator.js'
 import Joi from 'joi'
 

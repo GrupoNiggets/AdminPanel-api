@@ -12,9 +12,6 @@ const bugsSchema = new mongoose.Schema({
   collection: 'bugs'
 })
 
-export const BugsModel = mongoose.models.Bugs || mongoose.model('Bugs', userSchema)
+export const BugsModel = mongoose.models.Bugs || mongoose.model('Bugs', bugsSchema)
 
 export default BugsModel
-
-import mongoose from 'mongoose'
-import { randomUUID } from 'crypto'
