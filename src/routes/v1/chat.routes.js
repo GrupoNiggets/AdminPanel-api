@@ -6,7 +6,7 @@ import {
   createMessage,
   updateMessage,
   deleteMessage
-} from '../../modules/chat/chat.controller.js'
+} from '../../modules/chat/index.js'
 import { createMessageSchema, updateMessageSchema } from '../../modules/chat/chat.validator.js'
 
 const router = Router()
