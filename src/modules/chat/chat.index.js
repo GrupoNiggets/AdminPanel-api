@@ -2,8 +2,8 @@ import { notFound } from '../../utils/AppError.js'
 import { created, noContent, ok } from '../../utils/ApiResponse.js'
 import { asyncHandler } from '../../middlewares/asyncHandler.js'
 import { ChatModel } from './chat.mongoose.js'
-import { toPublicUser } from '../users/users.index.js'
-import { UserRepository } from '../users/users.index.js'
+import { toPublicUser } from '../users/user.index.js'
+import { UserRepository } from '../users/user.index.js'
 
 // ========== MODEL ==========
 const userRepo = new UserRepository()
