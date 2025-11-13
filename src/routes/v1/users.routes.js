@@ -39,4 +39,5 @@ router.patch( "/:id", validate(updateUserSchema), updateUser );
 //VALIDA Y ELIMINA UN USUARIO POR ID
 router.delete( "/:id", validate(Joi.object({ id: Joi.string().uuid().required() })), deleteUser );
 
+//EXPORT router
 export default router;

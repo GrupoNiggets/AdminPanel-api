@@ -15,4 +15,5 @@ export const updateUserSchema = Joi.object({
   role: Joi.string().valid("admin", "user"),
 }).min(1);
 
+//EXPORT DE createUserSchema Y updateUserSchema
 export default { createUserSchema, updateUserSchema };
