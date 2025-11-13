@@ -34,13 +34,40 @@ src/
     index.js           # /api base, /health y montaje de /v1
     v1/
       index.js         # Agrupa rutas v1
+      bugs.routes.js   # Rutas del módulo Bugs
+      status.routes.js # Rutas del módulo Status
+      chat.routes.js   # Rutas del módulo Chat
+      posts.routes.js  # Rutas del módulo Posts
       users.routes.js  # Rutas del módulo Users
+      
 
-  modules/             # Módulos de dominio (feature-first)
+  modules/             # Módulos de dominio (BUGS)
+    bugs/
+      bugs.index.js
+      bugs.model.js
+      bugs.validator.js
+  
+  modules/             # Módulos de dominio (CHAT)
+    chat/
+      chat.index.js
+      chat.model.js
+      chat.validator.js
+
+  modules/             # Módulos de dominio (POSTS)
+    posts/
+      post.index.js
+      post.model.js
+      post.validator.js    
+
+  modules/             # Módulos de dominio (STATUS)
+    status/
+      status.index.js
+      status.model.js
+      status.validator.js
+
+  modules/             # Módulos de dominio (USERS)
     users/
-      user.controller.js
-      user.service.js
-      user.repository.js
+      user.index.js
       user.model.js
       user.validator.js
 
