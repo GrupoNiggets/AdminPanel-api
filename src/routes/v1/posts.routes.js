@@ -28,7 +28,8 @@ function validate (schema) {
 router.get('/', listPosts)
 router.get('/:id', validate(Joi.object({ id: Joi.string().uuid().required() })), getPost)
 router.post('/', validate(createPostSchema), createPost)
-router.put('/:id', validate(Joi.object({ id: Joi.string().uuid().required() })), validate(updatePostSchema), updatePost)
+router.put('/:id', validate(updatePostSchema), updatePost)
+router.patch('/:id', validate(updatePostSchema), updatePost)
 router.delete('/:id', validate(Joi.object({ id: Joi.string().uuid().required() })), deletePost)
 
 export default router
