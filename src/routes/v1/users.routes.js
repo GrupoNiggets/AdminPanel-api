@@ -31,7 +31,10 @@ router.get("/:id", validate(Joi.object({ id: Joi.string().uuid().required() })),
 router.post("/", validate(createUserSchema), createUser);
 
 //VALIDA Y ACTUALIZA UN USUARIO POR ID
-router.put( "/:id", validate(Joi.object({ id: Joi.string().uuid().required() })), validate(updateUserSchema), updateUser );
+//PUT
+router.put( "/:id", validate(updateUserSchema), updateUser );
+//PATCH
+router.patch( "/:id", validate(updateUserSchema), updateUser );
 
 //VALIDA Y ELIMINA UN USUARIO POR ID
 router.delete( "/:id", validate(Joi.object({ id: Joi.string().uuid().required() })), deleteUser );
