@@ -2,10 +2,12 @@ import mongoose from 'mongoose'
 import { randomUUID } from 'crypto'
 
 const bugsSchema = new mongoose.Schema({
-  id: { type: String, default: () => randomUUID(), index: true, unique: true },
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true, index: true },
-  role: { type: String, required: true }
+  id: { type: String, default: () => randomUUID(), unique: true, index: true },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  reporter: { type: String, required: true },
+  status: { type: String, enum: ['ABIERTO', 'EN PROGRESO', 'RESUELTO'], default: 'ABIERTO' },
+  priority: { type: String, enum: ['ALTA', 'MEDIA', 'BAJA'], default: 'MEDIA' }
 }, {
   timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
   versionKey: false,
@@ -13,5 +15,4 @@ const bugsSchema = new mongoose.Schema({
 })
 
 export const BugsModel = mongoose.models.Bugs || mongoose.model('Bugs', bugsSchema)
-
 export default BugsModel

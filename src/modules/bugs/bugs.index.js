@@ -1,53 +1,48 @@
 import { notFound, badRequest } from '../../utils/AppError.js'
 import { created, noContent, ok } from '../../utils/ApiResponse.js'
 import { asyncHandler } from '../../middlewares/asyncHandler.js'
-import { BugsModel } from './bugs.mongoose.js'
+import BugsModel from './bugs.mongoose.js'
+import { createBugSchema, updateBugSchema } from './bugs.validator.js'
 
-// ========== MODEL ==========
+//MODEL
 export const bugsFields = {
   id: 'string',
-  name: 'string',
-  email: 'string',
-  role: 'string',
+  title: 'string',
+  description: 'string',
+  reporter: 'string',
+  status: 'string',
+  priority: 'string',
   createdAt: 'date',
   updatedAt: 'date'
 }
 
-export function toPublicBugs (bug) {
+export function toPublicBug (bug) {
   if (!bug) return null
-  const { id, name, email, role, createdAt, updatedAt } = bug
-  return { id, name, email, role, createdAt, updatedAt }
+  const { id, title, description, reporter, status, priority, createdAt, updatedAt } = bug
+  return { id, title, description, reporter, status, priority, createdAt, updatedAt }
 }
 
-// ========== REPOSITORY ==========
+//REPOSITORY
 export class BugsRepository {
   async list () {
-    const docs = await BugsModel.find({}).lean().exec()
-    return docs
+    return await BugsModel.find({}).lean().exec()
   }
 
   async getById (id) {
-    const doc = await BugsModel.findOne({ id }).lean().exec()
-    return doc || null
-  }
-
-  async getByEmail (email) {
-    const doc = await BugsModel.findOne({ email }).lean().exec()
-    return doc || null
+    return await BugsModel.findOne({ id }).lean().exec()
   }
 
   async create (data) {
-    const created = await BugsModel.create(data)
-    return created.toObject()
+    const doc = await BugsModel.create(data)
+    return doc.toObject()
   }
 
   async update (id, changes) {
-    const updated = await BugsModel.findOneAndUpdate(
+    return await BugsModel.findOneAndUpdate(
       { id },
       { $set: changes },
       { new: true, lean: true }
     ).exec()
-    return updated || null
   }
 
   async remove (id) {
@@ -56,7 +51,7 @@ export class BugsRepository {
   }
 }
 
-// ========== SERVICE ==========
+//SERVICE
 export class BugsService {
   constructor (deps = {}) {
     this.bugsRepository = deps.bugsRepository || new BugsRepository()
@@ -64,67 +59,60 @@ export class BugsService {
 
   async listBugs () {
     const items = await this.bugsRepository.list()
-    return items.map(toPublicBugs)
+    return items.map(toPublicBug)
   }
 
-  async getBugs (id) {
+  async getBug (id) {
     const bug = await this.bugsRepository.getById(id)
-    if (!bug) {
-      throw notFound('Bug no encontrado')
-    }
-    return toPublicBugs(bug)
+    if (!bug) throw notFound('Bug no encontrado')
+    return toPublicBug(bug)
   }
 
-  async createBugs (payload) {
-    const existing = await this.bugsRepository.getByEmail(payload.email)
-    if (existing) {
-      throw badRequest('El email ya está en uso', 'EMAIL_IN_USE')
-    }
+  async createBug (payload) {
+    const { error } = createBugSchema.validate(payload)
+    if (error) throw badRequest(error.message)
+
     const created = await this.bugsRepository.create(payload)
-    return toPublicBugs(created)
+    return toPublicBug(created)
   }
 
-  async updateBugs (id, payload) {
+  async updateBug (id, payload) {
+    const { error } = updateBugSchema.validate(payload)
+    if (error) throw badRequest(error.message)
+
     const updated = await this.bugsRepository.update(id, payload)
-    if (!updated) {
-      throw notFound('Bug no encontrado')
-    }
-    return toPublicBugs(updated)
+    if (!updated) throw notFound('Bug no encontrado')
+
+    return toPublicBug(updated)
   }
 
-  async deleteBugs (id) {
+  async deleteBug (id) {
     const ok = await this.bugsRepository.remove(id)
-    if (!ok) {
-      throw notFound('Bug no encontrado')
-    }
+    if (!ok) throw notFound('Bug no encontrado')
     return true
   }
 }
 
-// ========== CONTROLLER ==========
+//CONTROLLER
 const bugsService = new BugsService()
 
 export const listBugs = asyncHandler(async (req, res) => {
-  const data = await bugsService.listBugs()
-  ok(res, data)
+  ok(res, await bugsService.listBugs())
 })
 
-export const getBugs = asyncHandler(async (req, res) => {
-  const data = await bugsService.getBugs(req.params.id)
-  ok(res, data)
+export const getBug = asyncHandler(async (req, res) => {
+  ok(res, await bugsService.getBug(req.params.id))
 })
 
-export const createBugs = asyncHandler(async (req, res) => {
-  const data = await bugsService.createBugs(req.body)
-  created(res, data)
+export const createBug = asyncHandler(async (req, res) => {
+  created(res, await bugsService.createBug(req.body))
 })
 
-export const updateBugs = asyncHandler(async (req, res) => {
-  const data = await bugsService.updateBugs(req.params.id, req.body)
-  ok(res, data)
+export const updateBug = asyncHandler(async (req, res) => {
+  ok(res, await bugsService.updateBug(req.params.id, req.body))
 })
 
-export const deleteBugs = asyncHandler(async (req, res) => {
-  await bugsService.deleteBugs(req.params.id)
+export const deleteBug = asyncHandler(async (req, res) => {
+  await bugsService.deleteBug(req.params.id)
   noContent(res)
 })
