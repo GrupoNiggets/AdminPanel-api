@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import Joi from 'joi'
-import { getStatus, pingStatus } from './status.index.js'
+import { getStatus, pingStatus } from '../../modules/status/status.index.js'
 
 const router = Router()
 

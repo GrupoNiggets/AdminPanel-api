@@ -2,8 +2,7 @@ import { notFound } from '../../utils/AppError.js'
 import { created, noContent, ok } from '../../utils/ApiResponse.js'
 import { asyncHandler } from '../../middlewares/asyncHandler.js'
 import { ChatModel } from './chat.mongoose.js'
-import { toPublicUser } from '../users/user.index.js'
-import { UserRepository } from '../users/user.index.js'
+import { toPublicUser, UserRepository } from '../users/user.index.js'
 
 // ========== MODEL ==========
 const userRepo = new UserRepository()
@@ -74,8 +73,6 @@ export class ChatService {
   }
 
   async createMessage (payload) {
-    const user = await this.userRepository.getById(payload.userId)
-    if (!user) throw notFound('Usuario asociado no encontrado')
     const created = await this.chatRepository.create(payload)
     return toPublicMessageWithUser(created)
   }
