@@ -7,8 +7,7 @@ const userSchema = new mongoose.Schema(
   {
     //id
     id: {
-      type: String,
-      default: () => randomUUID(),
+      type: Number,
       index: true,
       unique: true,
     },
@@ -28,6 +27,21 @@ const userSchema = new mongoose.Schema(
     collection: "users",
   }
 );
+
+// Asignar id incremental automáticamente al crear un usuario nuevo
+userSchema.pre("save", async function (next) {
+  try {
+    // Si no es un documento nuevo o el id ya viene definido, no hacemos nada
+    if (!this.isNew || this.id != null) return next();
+
+    const Model = this.constructor;
+    const lastUser = await Model.findOne({}).sort({ id: -1 }).lean().exec();
+    this.id = lastUser ? lastUser.id + 1 : 1;
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 
 //UserModel (EN MONGOOSE NO SE USA CAMELCASE)
 export const UserModel =

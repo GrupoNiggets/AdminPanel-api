@@ -25,7 +25,7 @@ function validate(schema) {
 router.get("/", listUsers);
 
 //MUESTRA UN USUARIO POR ID
-router.get("/:id", validate(Joi.object({ id: Joi.string().uuid().required() })), getUser );
+router.get("/:id", validate(Joi.object({ id: Joi.number().integer().positive().required() })), getUser );
 
 //VALIDA Y ENVÍA LOS USUARIOS
 router.post("/", validate(createUserSchema), createUser);
@@ -37,7 +37,7 @@ router.put( "/:id", validate(updateUserSchema), updateUser );
 router.patch( "/:id", validate(updateUserSchema), updateUser );
 
 //VALIDA Y ELIMINA UN USUARIO POR ID
-router.delete( "/:id", validate(Joi.object({ id: Joi.string().uuid().required() })), deleteUser );
+router.delete( "/:id", validate(Joi.object({ id: Joi.number().integer().positive().required() })), deleteUser );
 
 //EXPORT router
 export default router;

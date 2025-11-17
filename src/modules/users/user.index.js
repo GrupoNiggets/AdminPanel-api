@@ -7,7 +7,7 @@ import { UserModel } from './user.mongoose.js'
 // MODELO
 // CAMPOS DE USUARIO
 export const userFields = {
-  id: 'string',
+  id: 'number',
   name: 'string',
   email: 'string',
   role: 'string',
