@@ -3,19 +3,22 @@ import { StatusModel } from './status.mongoose.js'
 
 const router = express.Router()
 
-// GET /status - básico
 router.get('/', (req, res) => {
   res.json({ message: 'OK' })
 })
 
-// POST /status/ping - guarda un ping simple
 router.post('/ping', async (req, res) => {
   try {
-    const { responseCode, responseTime } = req.body
-    
+    const start = Date.now()
+
+    await new Promise(r => setTimeout(r, 0))
+
+    const end = Date.now()
+    const responseTime = end - start
+
     const doc = await StatusModel.create({
-      responseCode: responseCode || 200,
-      responseTime: responseTime || 0,
+      responseCode: 200,
+      responseTime,
       timestamp: new Date()
     })
 
@@ -28,17 +31,20 @@ router.post('/ping', async (req, res) => {
 
 export default router
 
-//intento de ping automatico
-
 setInterval(async () => {
   try {
+    const start = Date.now()
+    await new Promise(r => setTimeout(r, 0))
+    const end = Date.now()
+    const responseTime = end - start
+
     await StatusModel.create({
       responseCode: 200,
-      responseTime: Math.floor(Math.random() * 100),
+      responseTime,
       timestamp: new Date()
     })
     console.log('ping auto guardado')
   } catch (e) {
     console.error('error en ping auto', e)
   }
-}, 5 * 60 * 1000) // 5 minutos
+}, 5 * 60 * 1000)
