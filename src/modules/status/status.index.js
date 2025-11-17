@@ -1,13 +1,10 @@
-import express from 'express'
 import { StatusModel } from './status.mongoose.js'
 
-const router = express.Router()
-
-router.get('/', (req, res) => {
+export const getStatus = (req, res) => {
   res.json({ message: 'OK' })
-})
+}
 
-router.post('/ping', async (req, res) => {
+export const pingStatus = async (req, res) => {
   try {
     const start = Date.now()
 
@@ -27,10 +24,9 @@ router.post('/ping', async (req, res) => {
     console.error(err)
     res.status(500).json({ error: 'error guardando el ping' })
   }
-})
+}
 
-export default router
-
+// ping automático cutre cada 5 minutos
 setInterval(async () => {
   try {
     const start = Date.now()
