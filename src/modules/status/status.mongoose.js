@@ -1,19 +1,13 @@
 import mongoose from 'mongoose'
-import { randomUUID } from 'crypto'
 
-const userSchema = new mongoose.Schema({
-  id: { type: String, default: () => randomUUID(), index: true, unique: true },
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true, index: true },
-  role: { type: String, required: true }
+const statusSchema = new mongoose.Schema({
+  responseCode: Number,
+  responseTime: Number,
+  timestamp: Date
 }, {
-  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
-  versionKey: false,
   collection: 'status'
 })
 
-export const UserModel = mongoose.models.User || mongoose.model('User', userSchema)
+export const StatusModel = mongoose.models.Status || mongoose.model('Status', statusSchema)
 
-export default UserModel
-
-
+export default StatusModel
