@@ -11,24 +11,37 @@ import { createMessageSchema, updateMessageSchema } from '../../modules/chat/cha
 
 const router = Router()
 
-function validate (schema) {
+function validateBody (schema) {
   return (req, res, next) => {
-    const toValidate = ['GET', 'DELETE'].includes(req.method) ? req.params : req.body
-    const result = schema.validate(toValidate, { abortEarly: false, stripUnknown: true })
+    const result = schema.validate(req.body, { abortEarly: false, stripUnknown: true })
     if (result.error) {
       const details = result.error.details.map(d => d.message)
       return res.status(400).json({ success: false, error: { code: 'VALIDATION_ERROR', message: 'Datos inválidos', details } })
     }
-    if (['POST', 'PUT', 'PATCH'].includes(req.method)) req.body = result.value
-    else req.params = result.value
+    req.body = result.value
     next()
   }
 }
 
+function validateParams (schema) {
+  return (req, res, next) => {
+    const result = schema.validate(req.params, { abortEarly: false, stripUnknown: true })
+    if (result.error) {
+      const details = result.error.details.map(d => d.message)
+      return res.status(400).json({ success: false, error: { code: 'VALIDATION_ERROR', message: 'Datos inválidos', details } })
+    }
+    req.params = result.value
+    next()
+  }
+}
+
+const idSchema = Joi.object({ id: Joi.string().uuid().required() })
+
 router.get('/', listMessages)
-router.get('/:id', validate(Joi.object({ id: Joi.string().uuid().required() })), getMessage)
-router.post('/', validate(createMessageSchema), createMessage)
-router.put('/:id', validate(Joi.object({ id: Joi.string().uuid().required() })), validate(updateMessageSchema), updateMessage)
-router.delete('/:id', validate(Joi.object({ id: Joi.string().uuid().required() })), deleteMessage)
+router.get('/:id', validateParams(idSchema), getMessage)
+router.post('/', validateBody(createMessageSchema), createMessage)
+router.put('/:id', validateParams(idSchema), validateBody(updateMessageSchema), updateMessage)
+router.patch('/:id', validateParams(idSchema), validateBody(updateMessageSchema), updateMessage)
+router.delete('/:id', validateParams(idSchema), deleteMessage)
 
 export default router
