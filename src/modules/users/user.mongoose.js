@@ -18,6 +18,8 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true, index: true },
     //role
     role: { type: String, required: true },
+    //premium
+    premium: { type: Boolean, default: false },
   },
   {
     //createdAt y updatedAt

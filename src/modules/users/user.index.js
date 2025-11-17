@@ -11,6 +11,7 @@ export const userFields = {
   name: 'string',
   email: 'string',
   role: 'string',
+  premium: 'boolean',
   createdAt: 'date',
   updatedAt: 'date'
 }
@@ -18,8 +19,8 @@ export const userFields = {
 // FUNCIÓN toPublicUser (DEVUELVE LOS CAMPOS DE FORMA SIMILAR A UN JSON)
 export function toPublicUser (user) {
   if (!user) return null
-  const { id, name, email, role, createdAt, updatedAt } = user
-  return { id, name, email, role, createdAt, updatedAt }
+  const { id, name, email, role, premium, createdAt, updatedAt } = user
+  return { id, name, email, role, premium, createdAt, updatedAt }
 }
 
 // REPOSITORIO
@@ -100,7 +101,8 @@ export class UserService {
 
   //updateUser
   async updateUser (id, payload) {
-    const updated = await this.userRepository.update(id, payload)
+    const { createdAt, updatedAt, ...safePayload } = payload
+    const updated = await this.userRepository.update(id, safePayload)
     if (!updated) {
       throw notFound('Usuario no encontrado')
     }
