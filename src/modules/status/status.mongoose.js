@@ -1,12 +1,13 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
-const StatusSchema = new mongoose.Schema(
-  {
-    responseCode: { type: Number, required: false },
-    responseTime: { type: Number, required: false },
-    timestamp: { type: Date, required: false }
-  },
-  { collection: 'status' }
-);
+const statusSchema = new mongoose.Schema({
+  responseCode: Number,
+  responseTime: Number,
+  timestamp: Date
+}, {
+  collection: 'status'
+})
 
-module.exports = mongoose.model('Status', StatusSchema);
+export const StatusModel = mongoose.models.Status || mongoose.model('Status', statusSchema)
+
+export default StatusModel
