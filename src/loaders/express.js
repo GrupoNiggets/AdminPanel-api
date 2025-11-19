@@ -6,9 +6,10 @@ import compression from 'compression'
 import rateLimit from 'express-rate-limit'
 import { notFoundHandler } from '../middlewares/notFound.js'
 import { errorHandler } from '../middlewares/errorHandler.js'
+import { setupSwagger } from './swagger.js'
 import config from '../config/index.js'
 
-export async function createExpressApp () {
+export async function createExpressApp() {
   const app = express()
 
   app.set('trust proxy', 1)
@@ -27,6 +28,9 @@ export async function createExpressApp () {
     max: 100
   })
   app.use(limiter)
+
+  // Setup Swagger documentation
+  setupSwagger(app)
 
   const { default: routes } = await import('../routes/index.js')
   app.use('/api', routes)

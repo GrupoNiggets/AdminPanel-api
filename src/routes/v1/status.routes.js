@@ -19,8 +19,28 @@ function validate(schema) {
 }
 
 // RUTAS STATUS
+/**
+ * @swagger
+ * /v1/status:
+ *   get:
+ *     summary: Obtener estado del sistema
+ *     tags: [Status]
+ *     responses:
+ *       200:
+ *         description: Estado del sistema obtenido exitosamente
+ */
 router.get('/', getStatus)
 
+/**
+ * @swagger
+ * /v1/status/ping:
+ *   post:
+ *     summary: Ping al sistema
+ *     tags: [Status]
+ *     responses:
+ *       200:
+ *         description: Pong recibido exitosamente
+ */
 router.post('/ping', validate(Joi.object({})), pingStatus)
 
 export default router
