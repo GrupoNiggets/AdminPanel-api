@@ -4,11 +4,23 @@ export const getStatus = (req, res) => {
   res.json({ message: 'OK' })
 }
 
+export const getPingHistory = async (req, res) => {
+  try {
+    const history = await StatusModel.find()
+      .sort({ timestamp: -1 })
+      .limit(50)
+
+    res.json(history)
+  } catch (err) {
+    res.status(500).json({ error: 'no se pudo obtener el historial' })
+  }
+}
+
 export const pingStatus = async (req, res) => {
   try {
     const start = Date.now()
 
-    await new Promise(r => setTimeout(r, 0))
+    await new Promise(resolve => setTimeout(resolve, 0))
 
     const end = Date.now()
     const responseTime = end - start
@@ -26,11 +38,11 @@ export const pingStatus = async (req, res) => {
   }
 }
 
-// ping automático cutre cada 5 minutos
+// ping automático cada 5 minutos
 setInterval(async () => {
   try {
     const start = Date.now()
-    await new Promise(r => setTimeout(r, 0))
+    await new Promise(resolve => setTimeout(resolve, 0))
     const end = Date.now()
     const responseTime = end - start
 
@@ -39,6 +51,7 @@ setInterval(async () => {
       responseTime,
       timestamp: new Date()
     })
+
     console.log('ping auto guardado')
   } catch (e) {
     console.error('error en ping auto', e)
