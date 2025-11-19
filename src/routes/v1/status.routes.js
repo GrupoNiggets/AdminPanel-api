@@ -24,9 +24,47 @@ function validate(schema) {
   }
 }
 
-// RUTAS STATUS
+/**
+ * @swagger
+ * /v1/status:
+ *   get:
+ *     summary: Obtener estado del sistema
+ *     tags: [Status]
+ *     responses:
+ *       200:
+ *         description: Estado del sistema obtenido exitosamente
+ */
 router.get('/', getStatus)
 
+/**
+ * @swagger
+ * /v1/status/ping:
+ *   get:
+ *     summary: Ping al sistema (GET)
+ *     tags: [Status]
+ *     responses:
+ *       200:
+ *         description: Pong recibido exitosamente
+ *   post:
+ *     summary: Ping al sistema (POST)
+ *     tags: [Status]
+ *     responses:
+ *       200:
+ *         description: Pong recibido exitosamente
+ */
+router.get('/ping', validate(Joi.object({})), pingStatus)
 router.post('/ping', validate(Joi.object({})), pingStatus)
+
+/**
+ * @swagger
+ * /v1/status/history:
+ *   get:
+ *     summary: Obtener historial de pings
+ *     tags: [Status]
+ *     responses:
+ *       200:
+ *         description: Historial de pings obtenido exitosamente
+ */
+router.get('/history', getPingHistory)
 
 export default router
