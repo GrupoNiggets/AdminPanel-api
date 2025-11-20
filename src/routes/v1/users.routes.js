@@ -20,24 +20,218 @@ function validate(schema) {
   };
 }
 
-//RUTAS USUARIOS
-//MUESTRA LA LISTA DE USUARIOS
+/**
+ * @swagger
+ * /v1/users:
+ *   get:
+ *     summary: Obtener lista de usuarios
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Lista de usuarios obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
+ */
 router.get("/", listUsers);
 
-//MUESTRA UN USUARIO POR ID
-router.get("/:id", validate(Joi.object({ id: Joi.number().integer().positive().required() })), getUser );
+/**
+ * @swagger
+ * /v1/users/{id}:
+ *   get:
+ *     summary: Obtener un usuario por ID
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       404:
+ *         description: Usuario no encontrado
+ */
+router.get("/:id", validate(Joi.object({ id: Joi.number().integer().positive().required() })), getUser);
 
-//VALIDA Y ENVÍA LOS USUARIOS
+/**
+ * @swagger
+ * /v1/users:
+ *   post:
+ *     summary: Crear un nuevo usuario
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Nombre del usuario
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Email del usuario
+ *               role:
+ *                 type: string
+ *                 enum: [admin, user]
+ *                 description: Rol del usuario
+ *     responses:
+ *       201:
+ *         description: Usuario creado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Datos inválidos
+ */
 router.post("/", validate(createUserSchema), createUser);
 
-//VALIDA Y ACTUALIZA UN USUARIO POR ID
-//PUT
-router.put( "/:id", validate(updateUserSchema), updateUser );
-//PATCH
-router.patch( "/:id", validate(updateUserSchema), updateUser );
+/**
+ * @swagger
+ * /v1/users/{id}:
+ *   put:
+ *     summary: Actualizar un usuario completamente
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del usuario
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               role:
+ *                 type: string
+ *                 enum: [admin, user]
+ *     responses:
+ *       200:
+ *         description: Usuario actualizado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       404:
+ *         description: Usuario no encontrado
+ *   patch:
+ *     summary: Actualizar un usuario parcialmente
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del usuario
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               role:
+ *                 type: string
+ *                 enum: [admin, user]
+ *     responses:
+ *       200:
+ *         description: Usuario actualizado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       404:
+ *         description: Usuario no encontrado
+ */
+router.put("/:id", validate(updateUserSchema), updateUser);
+router.patch("/:id", validate(updateUserSchema), updateUser);
 
-//VALIDA Y ELIMINA UN USUARIO POR ID
-router.delete( "/:id", validate(Joi.object({ id: Joi.number().integer().positive().required() })), deleteUser );
+/**
+ * @swagger
+ * /v1/users/{id}:
+ *   delete:
+ *     summary: Eliminar un usuario
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario eliminado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *       404:
+ *         description: Usuario no encontrado
+ */
+router.delete("/:id", validate(Joi.object({ id: Joi.number().integer().positive().required() })), deleteUser);
 
 //EXPORT router
 export default router;
+
