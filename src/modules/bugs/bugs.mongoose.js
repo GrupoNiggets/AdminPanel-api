@@ -6,8 +6,8 @@ const bugsSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   reporter: { type: String, required: true },
-  status: { type: String, enum: ['ABIERTO', 'EN PROGRESO', 'RESUELTO'], default: 'ABIERTO' },
-  priority: { type: String, enum: ['ALTA', 'MEDIA', 'BAJA'], default: 'MEDIA' }
+  status: { type: String, enum: ['abierto', 'en progreso', 'resuelto'], default: 'abierto' },
+  priority: { type: String, enum: ['alta', 'media', 'baja'], default: 'media' }
 }, {
   timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' },
   versionKey: false,
