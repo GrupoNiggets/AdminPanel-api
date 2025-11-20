@@ -27,5 +27,12 @@ function validate(schema) {
 router.get('/', getStatus)
 router.get('/ping', validate(Joi.object({})), pingStatus)
 router.get('/history', getPingHistory)
+router.get('/forzar-403', (req, res) => {
+  res.status(403).json({ error: "forzado 403" })
+})
+router.get('/forzar-500', (req, res) => {
+  res.status(500).json({ error: "forzado 500 Internal Server Error" })
+})
+
 
 export default router
