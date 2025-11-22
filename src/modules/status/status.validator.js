@@ -1,5 +1,7 @@
+//validateStatus
 export const validateStatus = (req, res, next) => {
-  next()
-}
+  next();
+};
 
-export default { validateStatus }
+//EXPORT DE validateStatus
+export default { validateStatus };

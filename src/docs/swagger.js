@@ -1,104 +1,127 @@
 //DEFINICIÓN Y EXPORTACIÓN DE swaggerDefinition
 export const swaggerDefinition = {
   //VERSIÓN OpenAPI
-  openapi: '3.0.0',
+  openapi: "3.0.0",
   //INFORMACIÓN
   info: {
     //TÍTULO
-    title: 'AdminPanel API',
+    title: "AdminPanel API",
     //VERSIÓN
-    version: '0.1.0',
+    version: "0.1.0",
     //DESCRIPCIÓN
-    description: 'API enterprise de ejemplo con Express'
+    description: "API enterprise de ejemplo con Express",
   },
 
   //LISTA DE SERVIDORES
   servers: [
     //URL Y DESCRIPCIÓN
-    { url: '/api', description: 'API Base' }
+    { url: "/api", description: "API Base" },
   ],
   //DEFINICIÓN DE LOS ESQUEMAS REUTILIZABLES
   components: {
     schemas: {
-      //CHAT
-      Chat: {
-        type: 'object',
+      //BUGS
+      Bugs: {
+        type: "object",
         //PROPIEDADES
         properties: {
           //ID
-          id: { type: 'string', format: 'uuid' },
-          //USERID
-          userId: { type: 'string', format: 'uuid' },
-          //MESSAGEID
-          messageId: { type: 'string', format: 'uuid' },
-          //CONTENT
-          content: { type: 'string' },
+          id: { type: "string", format: "uuid" },
+          //TITLE
+          title: { type: "string" },
+          //DESCRIPTION
+          description: { type: "string" },
+          //REPORTER
+          reporter: { type: "string" },
+          //STATUS
+          status: { type: "string" },
+          //PRIORITY
+          priority: { type: "string" },
           //TIEMPO DE CREACIÓN
-          createdAt: { type: 'date' },
+          createdAt: { type: "date" },
           //TIEMPO DE ACTUALIZACIÓN
-          updatedAt: { type: 'date' }
-        }
+          updatedAt: { type: "date" },
+        },
+      },
+      //CHAT
+      Chat: {
+        type: "object",
+        //PROPIEDADES
+        properties: {
+          //ID
+          id: { type: "string", format: "uuid" },
+          //USERID
+          userId: { type: "string", format: "uuid" },
+          //MESSAGEID
+          messageId: { type: "string", format: "uuid" },
+          //CONTENT
+          content: { type: "string" },
+          //TIEMPO DE CREACIÓN
+          createdAt: { type: "date" },
+          //TIEMPO DE ACTUALIZACIÓN
+          updatedAt: { type: "date" },
+        },
       },
       //POSTS
       Posts: {
-        type: 'object',
+        type: "object",
         //PROPIEDADES
         properties: {
           //USERID
-          userId: { type: 'string', format: 'uuid' },
+          userId: { type: "string", format: "uuid" },
           //CONTENT
-          content: { type: 'string' },
+          content: { type: "string" },
           //COORDINATES
-          coordinates: { type: 'coordinates' },
+          coordinates: { type: "coordinates" },
           //POSTID
-          postId: { type: 'string', format: 'uuid' },
+          postId: { type: "string", format: "uuid" },
           //TIEMPO DE CREACIÓN
-          createdAt: { type: 'string', format: 'date-time' },
+          createdAt: { type: "string", format: "date-time" },
           //TIEMPO DE ACTUALIZACIÓN
-          updatedAt: { type: 'string', format: 'date-time' }
-        }
+          updatedAt: { type: "string", format: "date-time" },
+        },
       },
       //STATUS
       Status: {
-        type: 'object',
+        type: "object",
         //PROPIEDADES
         properties: {
           //ID
-          _id: { type: 'string', format: 'uuid' },
+          _id: { type: "string", format: "uuid" },
           //RESPONSECODE
-          responseCode: { type: 'int32' },
+          responseCode: { type: "int32" },
           //RESPONSETIME
-          responseTime: { type: 'int32' },
+          responseTime: { type: "int32" },
           //TIMESTAMP
-          timestamp: { type: 'string', format: 'date-time' },
+          timestamp: { type: "string", format: "date-time" },
           //__V
-          __v: { type: 'int32' }
-        }
+          __v: { type: "int32" },
+        },
       },
       //USER
       User: {
-        type: 'object',
+        type: "object",
         //PROPIEDADES
         properties: {
           //ID
-          id: { type: 'string', format: 'uuid' },
+          id: { type: "string", format: "uuid" },
           //NOMBRE
-          name: { type: 'string' },
+          name: { type: "string" },
           //EMAIL
-          email: { type: 'string', format: 'email' },
+          email: { type: "string", format: "email" },
           //ROL
-          role: { type: 'string', enum: ['admin', 'user'] },
+          role: { type: "string", enum: ["admin", "user"] },
           //TIEMPO DE CREACIÓN
-          createdAt: { type: 'string', format: 'date-time' },
+          createdAt: { type: "string", format: "date-time" },
           //TIEMPO DE ACTUALIZACIÓN
-          updatedAt: { type: 'string', format: 'date-time' },
+          updatedAt: { type: "string", format: "date-time" },
           //PREMIUM
-          premium: { type: 'boolean', default: false }
-        }
-      }
-    }
-  }
-}
+          premium: { type: "boolean", default: false },
+        },
+      },
+    },
+  },
+};
 
 //EXPORT swaggerDefinition
-export default swaggerDefinition
+export default swaggerDefinition;
