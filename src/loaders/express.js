@@ -26,7 +26,10 @@ export async function createExpressApp() {
           scriptSrc: ["'self'", "'unsafe-inline'"],
           imgSrc: ["'self'", 'data:', 'https:']
         }
-      }
+      },
+      hsts: false, // Disable HSTS to prevent forcing HTTPS in development
+      crossOriginOpenerPolicy: false, // Disable COOP header
+      crossOriginResourcePolicy: false // Disable CORP header
     })(req, res, next)
   })
 
