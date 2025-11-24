@@ -13,9 +13,11 @@ export async function createExpressApp() {
   const app = express()
 
   app.set('trust proxy', 1)
-  // Disable Helmet for Swagger docs to avoid CSP and COOP issues
+  // Disable Helmet for Swagger docs and force HSTS expiry
   app.use((req, res, next) => {
     if (req.path.startsWith('/api/docs')) {
+      // Force browser to clear HSTS cache
+      res.setHeader('Strict-Transport-Security', 'max-age=0')
       return next()
     }
     helmet({
